@@ -11,7 +11,7 @@ import SwiftUI
 struct AppGJMApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MedicineView(medicine: MedicineModel(name: "Dipirona", quantity: 1, typeOfMedicine: TypeOfMedicine.g, format: "Comprimido", alarm: true, firstTime: Date(), repetition: Repetition.every6Hours, firstMedicineHour: Date(), purpose: "Dor de Cabeça"))
         }
     }
 }
