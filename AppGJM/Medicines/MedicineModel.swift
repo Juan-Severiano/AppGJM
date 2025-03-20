@@ -8,14 +8,14 @@
 import Foundation
 import SwiftData
 
-enum Repetition: String, CaseIterable {
+enum Repetition: String, CaseIterable, Codable {
     case every4Hours = "4 em 4 horas"
     case every6Hours = "6 em 6 horas"
     case every8Hours = "8 em 8 horas"
     case every12Hours = "12 em 12 horas"
 }
 
-enum TypeOfMedicine {
+enum TypeOfMedicine: Codable {
     case mg
     case g
     case ml
@@ -23,6 +23,7 @@ enum TypeOfMedicine {
     case comprimido
 }
 
+@Model
 class MedicineModel {
     var id: UUID
     var name: String

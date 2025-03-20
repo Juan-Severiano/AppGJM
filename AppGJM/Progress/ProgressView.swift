@@ -11,6 +11,7 @@ struct CustomProgressView: View {
     var progress: CGFloat
     var width: CGFloat = 40
     var height: CGFloat = 40
+    var label: String
 
     var body: some View {
         ZStack {
@@ -24,7 +25,7 @@ struct CustomProgressView: View {
                 .stroke(AngularGradient(colors: [.white], center: .center), style: StrokeStyle(lineWidth: 6, lineCap: .butt, lineJoin: .miter))
                 .rotationEffect(.degrees(-90))
             
-            Text("\(String(format: "%0.0f", progress * 100))%")
+            Text(label)
                 .font(.caption)
             
         }

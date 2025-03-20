@@ -11,7 +11,7 @@ struct MedicineView: View {
     let medicine: MedicineModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading) {
             HStack {
                 Text("\(medicine.quantity)\(medicine.typeOfMedicine)")
                     .font(.callout)
@@ -28,6 +28,7 @@ struct MedicineView: View {
                     Text(calculateNextMedicineHour(start: medicine.firstMedicineHour, step: medicine.repetition))
                 } icon: {
                     Image(systemName: "alarm.waves.left.and.right")
+                        .foregroundColor(.primary)
                 }
             }
             
@@ -42,11 +43,12 @@ struct MedicineView: View {
                         Text((medicine.firstTime).formatted(date: .omitted, time: .shortened))
                     } icon: {
                         Image(systemName: "clock")
+                            .foregroundColor(.primary)
                     }
                     .font(.body)
                 }
                 Spacer()
-                CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay))
+                CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay), label: medicine.getSteps())
             }
         }
         .padding()
