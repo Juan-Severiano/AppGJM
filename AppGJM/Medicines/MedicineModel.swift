@@ -23,7 +23,6 @@ enum TypeOfMedicine {
     case comprimido
 }
 
-@Model
 class MedicineModel {
     var id: UUID
     var name: String
@@ -36,7 +35,8 @@ class MedicineModel {
     var firstMedicineHour: Date
     var purpose: String
     
-    var steps: Float
+    var dosesTaken: Int
+    var totalDosesPerDay: Int
     
     init(name: String, quantity: Int, typeOfMedicine: TypeOfMedicine, format: String, alarm: Bool, firstTime: Date, repetition: Repetition, firstMedicineHour: Date, purpose: String) {
         self.id = UUID()
@@ -49,13 +49,20 @@ class MedicineModel {
         self.repetition = repetition
         self.firstMedicineHour = firstMedicineHour
         self.purpose = purpose
-        self.steps = {
-            let dayTotalHours = 24
-            var labelOfRepetition = getRepetitionNumber(repetition: repetition)
-            
-            
-            
-            return Float(number / 10)
+        self.dosesTaken = 0
+        
+        let dayTotalHours = 24
+        let rangeOfRepetition = getRepetitionNumber(repetition: repetition)
+        self.totalDosesPerDay = dayTotalHours / Int(rangeOfRepetition)
+    }
+    
+    func getSteps() -> String {
+        return "\(dosesTaken)/\(totalDosesPerDay)"
+    }
+    
+    func takeDose() {
+        if dosesTaken < totalDosesPerDay {
+            dosesTaken += 1
         }
     }
 }

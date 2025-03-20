@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomProgressView: View {
-    @Binding var progress: CGFloat
+    var progress: CGFloat
     var width: CGFloat = 40
     var height: CGFloat = 40
 

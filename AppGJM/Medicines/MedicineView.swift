@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MedicineView: View {
     let medicine: MedicineModel
-    @State private var progress: CGFloat = 0.73
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -47,7 +46,7 @@ struct MedicineView: View {
                     .font(.body)
                 }
                 Spacer()
-                CustomProgressView(progress: $progress)
+                CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay))
             }
         }
         .padding()
@@ -59,7 +58,7 @@ struct MedicineView: View {
     }
     
     func calculateNextMedicineHour(start: Date, step: Repetition) -> String {
-        var range: Int = getRepetitionNumber(repetition: step)
+        let range: Int = getRepetitionNumber(repetition: step)
         let nextMedicineHour = Calendar.current.date(byAdding: .hour, value: range, to: start)!
         return nextMedicineHour.formatted(.dateTime.hour().minute())
     }
