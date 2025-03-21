@@ -12,7 +12,7 @@ import SwiftData
 struct AppGJMApp: App {
     var body: some Scene {
         WindowGroup {
-            AddTaskView()
+            ListTaskView()
         }
         .modelContainer(for: TaskModel.self)
     }

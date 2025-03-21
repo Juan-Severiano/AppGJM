@@ -15,12 +15,23 @@ class TaskModel: Identifiable {
     var tittle: String
     var date: Date
     var isDone: Bool
+    var priority: TaskPriority
     
-    init(id: UUID, tittle: String, date: Date, isDone: Bool = false) {
+    
+    init(id: UUID, tittle: String, date: Date, isDone: Bool = false, priority: TaskPriority) {
         self.id = id
         self.tittle = tittle
         self.date = date
         self.isDone = isDone
+        self.priority = priority
+    }
+    
+    enum TaskPriority: String, CaseIterable, Codable {
+        case urgente = "Urgente"
+        case importante = "Importante"
+        case rotina = "Rotina"
+        
+        var id: String { self.rawValue}
     }
     
 }
