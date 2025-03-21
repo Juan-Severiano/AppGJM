@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct AppGJMApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AddTaskView()
         }
+        .modelContainer(for: TaskModel.self)
     }
 }
