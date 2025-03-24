@@ -13,8 +13,7 @@ struct AppGJMApp: App {
     var body: some Scene {
         
         WindowGroup {
-            
-            ListMedicinesView()
+            NavigationView()
         }
         .modelContainer(for: [MedicineModel.self])
     }

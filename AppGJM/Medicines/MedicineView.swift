@@ -9,53 +9,63 @@ import SwiftUI
 
 struct MedicineView: View {
     let medicine: MedicineModel
-
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text("\(medicine.quantity)\(medicine.typeOfMedicine)")
-                    .font(.callout)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal)
-                    .background {
-                        Capsule()
-                            .fill(.white.opacity(0.3))
+        HStack {
+            Image(medicine.format.rawValue)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(medicine.name)
+                        .font(.title2.bold())
+                        .foregroundColor(.black)
+                        .padding(.vertical, 2)
+                    Spacer()
+                    
+                    Label {
+                        Text(calculateNextMedicineHour(start: medicine.firstMedicineHour, step: medicine.repetition))
+                            .dynamicTypeSize(.small)
+                    } icon: {
+                        Image(systemName: "alarm.waves.left.and.right")
+                            .foregroundColor(.primary)
+                    }.font(.footnote)
+                }
+                
+                HStack(alignment: .bottom, spacing: 1) {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Label {
+                            Text(medicine.days.rawValue)
+                        } icon: {
+                            Image(systemName: "calendar")
+                                .foregroundColor(.primary)
+                        }
+                        Label {
+                            Text("\(medicine.format.rawValue) - \(medicine.quantity)\(medicine.typeOfMedicine.rawValue)")
+                        } icon: {
+                            Image(systemName: "pills")
+                                .foregroundColor(.primary)
+                        }
+                        Label {
+                            Text(medicine.repetition.rawValue)
+                        } icon: {
+                            Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
+                                .foregroundColor(.primary)
+                        }
                     }
-                
-                Spacer()
-                
-                Label {
-                    Text(calculateNextMedicineHour(start: medicine.firstMedicineHour, step: medicine.repetition))
-                } icon: {
-                    Image(systemName: "alarm.waves.left.and.right")
-                        .foregroundColor(.primary)
+                    .font(.caption)
+                    Spacer()
+                    CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay), label: medicine.getSteps())
                 }
             }
-            
-            Text(medicine.name)
-                .font(.title2.bold())
-                .foregroundColor(.black)
-                .padding(.vertical, 6)
-            
-            HStack(alignment: .bottom, spacing: 5) {
-                VStack(alignment: .leading, spacing: 5) {
-                    Label {
-                        Text((medicine.firstTime).formatted(date: .omitted, time: .shortened))
-                    } icon: {
-                        Image(systemName: "clock")
-                            .foregroundColor(.primary)
-                    }
-                    .font(.body)
-                }
-                Spacer()
-                CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay), label: medicine.getSteps())
+            .padding(6)
+            .background {
+                Color.white
             }
         }
-        .padding()
         .frame(maxWidth: .infinity)
         .background {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.pink.opacity(0.8))
+                .fill(.gray.opacity(0.5))
+                .shadow(radius: 4.0, x: 1.0, y: 1.0)
         }
     }
     
@@ -68,6 +78,6 @@ struct MedicineView: View {
 
 #Preview {
     MedicineView(
-        medicine: MedicineModel(name: "Dipirona", quantity: 1, typeOfMedicine: TypeOfMedicine.g, format: "Comprimido", alarm: true, firstTime: Date(), repetition: Repetition.every6Hours, firstMedicineHour: Date(), purpose: "Dor de Cabeça")
+        medicine: MedicineModel(name: "Dipirona", quantity: 1, typeOfMedicine: TypeOfMedicine.g, format: .comprimido, alarm: true, firstTime: Date(), repetition: Repetition.every6Hours, firstMedicineHour: Date(), purpose: "Dor de Cabeça", days: .everyDay)
     )
 }

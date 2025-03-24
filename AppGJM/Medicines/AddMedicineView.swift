@@ -2,7 +2,7 @@
 //  AddMedicineView.swift
 //  AppGJM
 //
-//  Created by user on 20/03/25.
+//  Created by Francisco Juan on 20/03/25.
 //
 
 import SwiftUI
@@ -10,52 +10,84 @@ import SwiftUI
 struct AddMedicineView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
+    @State var hasNoName: Bool = false
     
-    @State var name: String = ""
+    @State var medicine: MedicineModel = MedicineModel(name: "", quantity: 1, typeOfMedicine: .mg, format: .comprimido, alarm: false, firstTime: Date(), repetition: .every4Hours, firstMedicineHour: Date(), purpose: "", days: .everyDay)
     
     var body: some View {
         NavigationStack {
-            Text("Qual é o medicamento?")
-                .font(.title)
-                .fontWeight(.bold)
-                .dynamicTypeSize(.xxxLarge)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: 300)
+            Image("add-medicine")
             Form {
-                TextField(text: $name) {
-                    Text("Nome do Medicamento")
+                Section(header: Text("Nome")) {
+                    TextField(text: $medicine.name) {
+                        Text("Nome do Medicamento")
+                    }
                 }
-                TextField(text: $name) {
-                    Text("Formato")
+                
+                Section(header: Text("Dose")) {
+                    Picker("Formato", selection: $medicine.format) {
+                        ForEach(Formats.allCases, id: \.self) { format in
+                            Text(format.rawValue)
+                        }
+                    }
+                    HStack {
+                        Stepper("Valor da Dose", value: $medicine.quantity, in: 0...1000)
+                        Text("\(medicine.quantity)")
+                    }
+                    Picker("Unidade de Medida", selection: $medicine.typeOfMedicine) {
+                        ForEach(TypeOfMedicine.allCases, id: \.self) { unit in
+                            Text(unit.rawValue)
+                        }
+                    }
                 }
-                TextField(text: $name) {
-                    Text("Dose")
+                
+                Section(header: Text("Dosagem(frequência)")) {
+                    Picker("Dias", selection: $medicine.days) {
+                        ForEach(Days.allCases, id: \.self) { format in
+                            Text(format.rawValue)
+                        }
+                    }
+                    if medicine.days == .specificDays {
+                        Text("dsfsdf")
+                    }
+                    Picker("Repetição", selection: $medicine.repetition) {
+                        ForEach(Repetition.allCases, id: \.self) { format in
+                            Text(format.rawValue)
+                        }
+                    }
+                    DatePicker("Horário de Início", selection: $medicine.firstMedicineHour, displayedComponents: .hourAndMinute)
                 }
-                .keyboardType(.numberPad)
+                
+                Section(header: Text("Adicionar Alarme")) {
+                    Toggle(isOn: $medicine.alarm) {
+                        Text("Alarme")
+                    }
+                }
             }
-            HStack {
-                Button {
-                    
-                } label: {
-                    Text("Seguinte")
-                        .frame(maxWidth: 300)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.pink)
-            }
-
+            .background(Color.white)
             .navigationTitle("Adicionar Medicamento")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Cancelar").fontWeight(.medium)
+                        Text("Cancelar")
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        self.addMedicine(medicine)
+                    } label: {
+                        Text("Seguinte")
                     }
                 }
             }
         }
+    }
+    func addMedicine(_ medicine: MedicineModel) {
+        modelContext.insert(medicine)
+        dismiss()
     }
 }
 

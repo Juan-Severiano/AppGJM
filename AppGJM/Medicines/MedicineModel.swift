@@ -15,12 +15,26 @@ enum Repetition: String, CaseIterable, Codable {
     case every12Hours = "12 em 12 horas"
 }
 
-enum TypeOfMedicine: Codable {
-    case mg
-    case g
-    case ml
-    case ampola
-    case comprimido
+enum TypeOfMedicine: String, CaseIterable, Codable {
+    case mg = "mg"
+    case g = "g"
+    case ml = "ml"
+    case mcg = "mcg"
+}
+
+enum Formats: String, CaseIterable, Codable {
+    case comprimido = "Comprimido"
+    case capsula = "Capsula"
+    case gotas = "Gotas"
+    case injecao = "Injeção"
+    case other = "Outro"
+}
+
+enum Days: String, CaseIterable, Codable {
+    case everyDay = "Todos os dias"
+    case today = "Hoje"
+    case tomorow = "Amanhã"
+    case specificDays = "Dias específicos"
 }
 
 @Model
@@ -29,22 +43,24 @@ class MedicineModel {
     var name: String
     var quantity: Int
     var typeOfMedicine: TypeOfMedicine
-    var format: String
+    var format: Formats
     var alarm: Bool
     var firstTime: Date
     var repetition: Repetition
     var firstMedicineHour: Date
     var purpose: String
+    var days: Days
+    var specificDays: [Days]?
     
     var dosesTaken: Int
     var totalDosesPerDay: Int
     
-    init(name: String, quantity: Int, typeOfMedicine: TypeOfMedicine, format: String, alarm: Bool, firstTime: Date, repetition: Repetition, firstMedicineHour: Date, purpose: String) {
+    init(name: String, quantity: Int, typeOfMedicine: TypeOfMedicine, format: Formats, alarm: Bool, firstTime: Date, repetition: Repetition, firstMedicineHour: Date, purpose: String, days: Days) {
         self.id = UUID()
         self.name = name
         self.quantity = quantity
         self.typeOfMedicine = typeOfMedicine
-        self.format = format
+        self.format = .comprimido
         self.alarm = alarm
         self.firstTime = firstTime
         self.repetition = repetition
@@ -55,6 +71,8 @@ class MedicineModel {
         let dayTotalHours = 24
         let rangeOfRepetition = getRepetitionNumber(repetition: repetition)
         self.totalDosesPerDay = dayTotalHours / Int(rangeOfRepetition)
+        self.days = days
+        self.specificDays = nil
     }
     
     func getSteps() -> String {
