@@ -2,7 +2,7 @@
 //  AppGJMApp.swift
 //  AppGJM
 //
-//  Created by user on 17/03/25.
+//  Created by AppGJM on 17/03/25.
 //
 
 import SwiftUI
@@ -11,9 +11,10 @@ import SwiftData
 @main
 struct AppGJMApp: App {
     var body: some Scene {
+        
         WindowGroup {
-            ListTaskView()
+            NavigationView()
         }
-        .modelContainer(for: TaskModel.self)
+        .modelContainer(for: [MedicineModel.self, TaskModel.self])
     }
 }
