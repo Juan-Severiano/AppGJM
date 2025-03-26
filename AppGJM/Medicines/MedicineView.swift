@@ -26,7 +26,7 @@ struct MedicineView: View {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 8) {
                             Image(systemName: "calendar")
-                            Text(medicine.days.rawValue)
+                            Text("\(medicine.days.rawValue) às \(medicine.firstMedicineHour.formatted(.dateTime.hour().minute()))")
                         }
                         HStack(spacing: 8) {
                             Image(systemName: "pills")

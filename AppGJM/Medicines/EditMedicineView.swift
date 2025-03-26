@@ -85,6 +85,7 @@ struct EditMedicineView: View {
                     Toggle(isOn: $medicine.alarm) {
                         Text("Alarme")
                     }
+                    .tint(.button)
                 }
             }
             .background(Color.white)

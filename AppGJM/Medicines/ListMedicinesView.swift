@@ -21,15 +21,17 @@ struct ListMedicinesView: View {
             if medicines.isEmpty {
                 VStack {
                     Image("home.empty.placeholder")
+                        .resizable()
+                        .frame(height: 300)
                     Text("Você ainda não tem medicamentos adicionados")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.title)
                     
-                    Text("Aperte no botão abaixo para adicionar algum medicamento")
+                    Text("Aperte no botão abaixo ou o \(Image(systemName: "plus.circle.fill")) para adicionar algum medicamento")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color("Title"))
+                        .foregroundColor(Color("Text"))
                     
                     HStack {
                         Button {
@@ -37,8 +39,10 @@ struct ListMedicinesView: View {
                         } label: {
                             Label {
                                 Text("Adicionar")
+                                    .font(.headline)
                             } icon: {
                                 Image(systemName: "plus")
+                                    .font(.headline)
                             }
                             .frame(width: 150)
                         }
@@ -109,7 +113,7 @@ struct ListMedicinesView: View {
                 AddMedicineView()
             }
             .navigationTitle("Medicamentos")
-            .searchable(text: $search)
+            .searchable(text: $search, prompt: "Pesquisar medicamento")
             .toolbar {
                 ToolbarItem(
                     placement: .topBarTrailing
@@ -126,7 +130,7 @@ struct ListMedicinesView: View {
         .onAppear {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithDefaultBackground()
-            appearance.backgroundColor = .background
+            appearance.backgroundColor = .white
             appearance.titleTextAttributes = [.foregroundColor: UIColor.title]
             appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.title]
             

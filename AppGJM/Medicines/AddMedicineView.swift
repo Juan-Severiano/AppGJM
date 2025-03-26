@@ -47,7 +47,7 @@ struct AddMedicineView: View {
                     }
                 }
                 
-                Section(header: Text("Dosagem(frequência)")) {
+                Section(header: Text("frequência")) {
                     Picker("Dias", selection: $medicine.days) {
                         ForEach(Days.allCases, id: \.self) { format in
                             Text(format.rawValue)
@@ -85,6 +85,7 @@ struct AddMedicineView: View {
                     Toggle(isOn: $medicine.alarm) {
                         Text("Alarme")
                     }
+                    .tint(.button)
                 }
             }
             .background(Color.white)

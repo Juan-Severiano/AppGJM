@@ -16,9 +16,6 @@ struct NavigationView: View {
             Tab("Tasks", systemImage: "list.bullet.clipboard.fill") {
                 ListTasksView()
             }
-            Tab("Resumo", systemImage: "folder.fill.badge.person.crop") {
-                ListMedicinesView()
-            }
         }
         .tint(Color.button)
     }
@@ -26,15 +23,4 @@ struct NavigationView: View {
 
 #Preview {
     NavigationView()
-        .modelContainer(for: [TaskModel.self,MedicineModel.self], inMemory: true) { result in
-            do {
-                let container = try result.get()
-                for i in 1...9 {
-                    let medicine = MedicineModel(name: "Medicamento \(i)", quantity: i, typeOfMedicine: TypeOfMedicine.mg, format: .capsula, alarm: i % 2 == 0, firstTime: Date(), repetition: Repetition.every6Hours, firstMedicineHour: Date(), purpose: "Dor e febre", days: .everyDay)
-                    container.mainContext.insert(medicine)
-                }
-            } catch {
-                print(error)
-            }
-        }
 }
