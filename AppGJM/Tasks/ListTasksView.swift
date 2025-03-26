@@ -13,6 +13,7 @@ struct ListTasksView: View {
     @State var search: String = ""
     
     @State var addTask: Bool = false
+    @State var editTask: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -23,9 +24,11 @@ struct ListTasksView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
+                        .foregroundColor(Color("Title"))
                     
                     Text("Aperte no botão abaixo para adicionar uma tarefa")
                         .multilineTextAlignment(.center)
+                        .foregroundColor(Color("Title"))
                     
                     HStack {
                         Button {
@@ -33,13 +36,15 @@ struct ListTasksView: View {
                         } label: {
                             Label {
                                 Text("Adicionar")
+                                    .font(.headline)
                             } icon: {
                                 Image(systemName: "plus")
+                                    .font(.headline)
                             }
                             .frame(width: 150)
                         }
                         .padding(10)
-                        .background(Color.black.opacity(0.7))
+                        .background(Color.button)
                         .foregroundColor(.white)
                         .containerShape(.capsule)
                     }
@@ -51,30 +56,33 @@ struct ListTasksView: View {
                         TaskView(task: task)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
-//                                    medicine.takeDose()
                                 } label: {
                                     Image(systemName: "trash")
                                 }
+                                .tint(.red)
                                 Button {
-//                                    medicine.takeDose()
+                                    editTask.toggle()
                                 } label: {
                                     Image(systemName: "pencil.and.scribble")
                                 }
-                                .background(Color.blue)
+                                .tint(.blue)
                             }
                             .listRowSeparator(.hidden)
                             .listRowInsets(.init(top: 8, leading: 16, bottom: 8, trailing: 16))
                             .contextMenu {
                                 Button {
-//                                    medicine.takeDose()
+                                    editTask.toggle()
                                 } label: {
                                     Label("Editar",systemImage: "pencil.and.scribble")
                                 }
+                            
                                 Button(role: .destructive) {
-//                                    medicine.takeDose()
                                 } label: {
                                     Label("Apagar",systemImage: "trash")
                                 }
+                            }
+                            .sheet(isPresented: $editTask) {
+                                EditTaskView(task: task)
                             }
                     }
                     .listStyle(.plain)
@@ -98,8 +106,7 @@ struct ListTasksView: View {
                         addTask.toggle()
                     } label: {
                         Image(systemName:"plus.circle.fill")
-                            .tint(.black.opacity(0.7))
-                    }
+                        .tint(.button)                    }
                 }
             }
         }
@@ -108,15 +115,6 @@ struct ListTasksView: View {
 
 #Preview {
     ListTasksView()
-        .modelContainer(for: [TaskModel.self], inMemory: true) { result in
-            do {
-                let container = try result.get()
-                for i in 1...9 {
-                    let task = TaskModel(name: "Task \(i)", priority: Priority.important, hasAlarm: false, days: Days.tomorow, activity: Activity.cleaning, hour: Date(), isDone: false)
-                    container.mainContext.insert(task)
-                }
-            } catch {
-                print(error)
-            }
-        }
+        .modelContainer(for: [TaskModel.self], inMemory: true)
+
 }
