@@ -97,7 +97,7 @@ struct ListTasksView: View {
                 AddTaskView()
             }
             .navigationTitle("Tarefas")
-            .searchable(text: $search)
+            .searchable(text: $search, prompt: "Pesquisar tarefa")
             .toolbar {
                 ToolbarItem(
                     placement: .topBarTrailing
