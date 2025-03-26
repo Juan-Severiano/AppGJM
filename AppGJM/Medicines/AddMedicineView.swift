@@ -63,7 +63,7 @@ struct AddMedicineView: View {
                                     .background {
                                         if medicine.specificDays.contains(value.rawValue) {
                                             Circle()
-                                                .fill(.black.opacity(0.8))
+                                                .fill(.button)
                                         }
                                     }
                                     .onTapGesture {

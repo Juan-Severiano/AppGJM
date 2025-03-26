@@ -24,9 +24,11 @@ struct ListMedicinesView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
+                        .foregroundColor(.title)
                     
                     Text("Aperte no botão abaixo para adicionar algum medicamento")
                         .multilineTextAlignment(.center)
+                        .foregroundColor(Color("Title"))
                     
                     HStack {
                         Button {
@@ -40,12 +42,12 @@ struct ListMedicinesView: View {
                             .frame(width: 150)
                         }
                         .padding(10)
-                        .background(Color.black.opacity(0.7))
+                        .background(Color.button)
                         .foregroundColor(.white)
                         .containerShape(.capsule)
                     }
                 }
-                .padding(20)
+                .padding(16)
             } else {
                 List {
                     ForEach(medicines.filter { search.isEmpty || $0.name.localizedCaseInsensitiveContains(search) }) { medicine in
@@ -102,7 +104,7 @@ struct ListMedicinesView: View {
             .sheet(isPresented: $addMedicine) {
                 AddMedicineView()
             }
-            .navigationTitle("Medicamentos")
+            .navigationTitle(Text("Medicamentos").foregroundColor(Color("Title")))
             .searchable(text: $search)
             .toolbar {
                 ToolbarItem(
@@ -112,7 +114,7 @@ struct ListMedicinesView: View {
                         addMedicine.toggle()
                     } label: {
                         Image(systemName:"plus.circle.fill")
-                            .tint(.black.opacity(0.7))
+                            .tint(.button)
                     }
                 }
             }
@@ -122,5 +124,5 @@ struct ListMedicinesView: View {
 
 #Preview {
     ListMedicinesView()
-        .modelContainer(for: [MedicineModel.self])
+        .modelContainer(for: [MedicineModel.self], inMemory: true)
 }
