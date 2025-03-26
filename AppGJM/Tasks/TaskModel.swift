@@ -27,6 +27,9 @@ enum Priority: String, Codable, CaseIterable {
 }
 
 enum Activity: String, Codable, CaseIterable {
+    case alimentation = "Alimentação"
+    case lazer  = "Lazer"
+    case hygiene = "Higiene"
     case cleaning = "Limpeza"
 }
 
@@ -37,7 +40,7 @@ class TaskModel: Identifiable {
     var hasAlarm: Bool
     var days: Days
     
-    var specificDays: String?
+    var specificDays: Set<String> = []
     
     var activity: Activity
     
@@ -45,12 +48,12 @@ class TaskModel: Identifiable {
     
     var isDone: Bool
     
-    init(name: String, priority: Priority, hasAlarm: Bool, days: Days, specificDays: String? = nil, activity: Activity, hour: Date, isDone: Bool) {
+    init(name: String, priority: Priority, hasAlarm: Bool, days: Days, activity: Activity, hour: Date, isDone: Bool) {
         self.name = name
         self.priority = priority
         self.hasAlarm = hasAlarm
         self.days = days
-        self.specificDays = specificDays
+        self.specificDays = []
         self.activity = activity
         self.hour = hour
         
