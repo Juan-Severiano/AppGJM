@@ -13,42 +13,31 @@ struct MedicineView: View {
     var body: some View {
         HStack {
             Image(medicine.format.rawValue)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 50)
             VStack(alignment: .leading) {
-                HStack {
                     Text(medicine.name)
-                        .font(.title2.bold())
+                        .font(.title3.bold())
                         .foregroundColor(.black)
                         .padding(.vertical, 2)
-                    Spacer()
-                    
-                    Label {
-                        Text(calculateNextMedicineHour(start: medicine.firstMedicineHour, step: medicine.repetition))
-                            .dynamicTypeSize(.small)
-                    } icon: {
-                        Image(systemName: "alarm.waves.left.and.right")
-                            .foregroundColor(.primary)
-                    }.font(.footnote)
-                }
                 
                 HStack(alignment: .bottom, spacing: 1) {
                     VStack(alignment: .leading, spacing: 1) {
-                        Label {
-                            Text(medicine.days.rawValue)
-                        } icon: {
+                        HStack(spacing: 8) {
                             Image(systemName: "calendar")
                                 .foregroundColor(.primary)
+                            Text(medicine.days.rawValue)
                         }
-                        Label {
-                            Text("\(medicine.format.rawValue) - \(medicine.quantity)\(medicine.typeOfMedicine.rawValue)")
-                        } icon: {
+                        HStack(spacing: 8) {
                             Image(systemName: "pills")
                                 .foregroundColor(.primary)
+                            Text("\(medicine.format.rawValue) - \(medicine.quantity)\(medicine.typeOfMedicine.rawValue)")
                         }
-                        Label {
-                            Text(medicine.repetition.rawValue)
-                        } icon: {
+                        HStack(spacing: 8) {
                             Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
                                 .foregroundColor(.primary)
+                            Text(medicine.repetition.rawValue)
                         }
                     }
                     .font(.caption)
@@ -62,11 +51,13 @@ struct MedicineView: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .background {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(.gray.opacity(0.5))
                 .shadow(radius: 4.0, x: 1.0, y: 1.0)
         }
+        
     }
     
     func calculateNextMedicineHour(start: Date, step: Repetition) -> String {

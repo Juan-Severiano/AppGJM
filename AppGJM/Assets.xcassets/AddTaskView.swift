@@ -2,24 +2,22 @@
 //  AddMedicineView.swift
 //  AppGJM
 //
-//  Created by Francisco Juan on 20/03/25.
+//  Created by Geovana on 20/03/25.
 //
 
 import SwiftUI
 
-struct AddMedicineView: View {
+struct AddTaskView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @State var hasNoName: Bool = false
     
-    @State var medicine: MedicineModel = MedicineModel(name: "", quantity: 1, typeOfMedicine: .mg, format: .comprimido, alarm: false, firstTime: Date(), repetition: .every4Hours, firstMedicineHour: Date(), purpose: "", days: .everyDay)
+    @State var task = TaskModel(id: <#T##UUID#>, tittle: <#T##String#>, date: <#T##Date#>, priority: <#T##TaskModel.TaskPriority#>)
     
     var body: some View {
         NavigationStack {
+            Image("add-medicine")
             Form {
-                Image("add-medicine")
-                    .containerRelativeFrame(.horizontal)
-                    .listRowBackground(Color.clear)
                 Section(header: Text("Nome")) {
                     TextField(text: $medicine.name) {
                         Text("Nome do Medicamento")
@@ -58,6 +56,9 @@ struct AddMedicineView: View {
                         }
                     }
                     DatePicker("Horário de Início", selection: $medicine.firstMedicineHour, displayedComponents: .hourAndMinute)
+                }
+                
+                Section(header: Text("Adicionar Alarme")) {
                     Toggle(isOn: $medicine.alarm) {
                         Text("Alarme")
                     }

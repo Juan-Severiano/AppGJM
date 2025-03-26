@@ -14,7 +14,7 @@ struct NavigationView: View {
                 ListMedicinesView()
             }
             Tab("Tasks", systemImage: "list.bullet.clipboard.fill") {
-                ListMedicinesView()
+                ListTasksView()
             }
             Tab("Resumo", systemImage: "folder.fill.badge.person.crop") {
                 ListMedicinesView()
@@ -25,7 +25,7 @@ struct NavigationView: View {
 
 #Preview {
     NavigationView()
-        .modelContainer(for: MedicineModel.self, inMemory: true) { result in
+        .modelContainer(for: [TaskModel.self,MedicineModel.self], inMemory: true) { result in
             do {
                 let container = try result.get()
                 for i in 1...9 {

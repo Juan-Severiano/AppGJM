@@ -2,36 +2,58 @@
 //  TasksModel.swift
 //  AppGJM
 //
-//  Created by user on 17/03/25.
+//  Created by Geovana on 17/03/25.
 //
 
 import Foundation
 import SwiftData
-import Observation
+import SwiftUI
+
+func getColorByPriority(_ priority: Priority) -> Color {
+    switch priority {
+    case .urgent:
+        return .red
+    case .important:
+        return .orange
+    case .routine:
+        return .green
+    }
+}
+
+enum Priority: String, Codable, CaseIterable {
+    case urgent = "Urgente"
+    case important = "Importante"
+    case routine = "Rotina"
+}
+
+enum Activity: String, Codable, CaseIterable {
+    case cleaning = "Limpeza"
+}
 
 @Model
 class TaskModel: Identifiable {
-    var id = UUID()
-    var tittle: String
-    var date: Date
+    var name: String
+    var priority: Priority
+    var hasAlarm: Bool
+    var days: Days
+    
+    var specificDays: String?
+    
+    var activity: Activity
+    
+    var hour: Date
+    
     var isDone: Bool
-    var priority: TaskPriority
     
-    
-    init(id: UUID, tittle: String, date: Date, isDone: Bool = false, priority: TaskPriority) {
-        self.id = id
-        self.tittle = tittle
-        self.date = date
-        self.isDone = isDone
+    init(name: String, priority: Priority, hasAlarm: Bool, days: Days, specificDays: String? = nil, activity: Activity, hour: Date, isDone: Bool) {
+        self.name = name
         self.priority = priority
-    }
-    
-    enum TaskPriority: String, CaseIterable, Codable {
-        case urgente = "Urgente"
-        case importante = "Importante"
-        case rotina = "Rotina"
+        self.hasAlarm = hasAlarm
+        self.days = days
+        self.specificDays = specificDays
+        self.activity = activity
+        self.hour = hour
         
-        var id: String { self.rawValue}
+        self.isDone = isDone
     }
-    
 }

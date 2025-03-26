@@ -1,36 +1,35 @@
 //
-//  ListMedicinesView.swift
+//  ListTasksView.swift
 //  AppGJM
 //
-//  Created by Francisco Juan on 20/03/25.
+//  Created by Geovana on 20/03/25.
 //
 
 import SwiftUI
 import SwiftData
 
-struct ListMedicinesView: View {
-    @Environment(\.modelContext) var modelContext
-    @Query var medicines: [MedicineModel]
+struct ListTasksView: View {
+    @Query var tasks: [TaskModel]
     @State var search: String = ""
     
-    @State var addMedicine: Bool = false
+    @State var addTask: Bool = false
     
     var body: some View {
         NavigationStack {
-            if medicines.isEmpty {
+            if tasks.isEmpty {
                 VStack {
-                    Image("home.empty.placeholder")
-                    Text("Você ainda não tem medicamentos adicionados")
+                    Image("tasks.empty.placeholder")
+                    Text("Você ainda não tem tarefas adicionadas")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                     
-                    Text("Aperte no botão abaixo para adicionar algum medicamento")
+                    Text("Aperte no botão abaixo para adicionar uma tarefa")
                         .multilineTextAlignment(.center)
                     
                     HStack {
                         Button {
-                            addMedicine.toggle()
+                            addTask.toggle()
                         } label: {
                             Label {
                                 Text("Adicionar")
@@ -48,25 +47,16 @@ struct ListMedicinesView: View {
                 .padding(20)
             } else {
                 List {
-                    ForEach(medicines.filter { search.isEmpty || $0.name.localizedCaseInsensitiveContains(search) }) { medicine in
-                        MedicineView(medicine: medicine)
-                            .swipeActions(edge: .leading) {
-                                Button {
-                                    medicine.takeDose()
-                                } label: {
-                                    Image(systemName: "checkmark.arrow.trianglehead.counterclockwise")
-                                }
-                                .tint(.blue)
-
-                            }
+                    ForEach(tasks.filter { search.isEmpty || $0.name.localizedCaseInsensitiveContains(search) }) { task in
+                        TaskView(task: task)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
-                                    modelContext.delete(medicine)
+//                                    medicine.takeDose()
                                 } label: {
                                     Image(systemName: "trash")
                                 }
                                 Button {
-                                    medicine.takeDose()
+//                                    medicine.takeDose()
                                 } label: {
                                     Image(systemName: "pencil.and.scribble")
                                 }
@@ -76,17 +66,12 @@ struct ListMedicinesView: View {
                             .listRowInsets(.init(top: 8, leading: 16, bottom: 8, trailing: 16))
                             .contextMenu {
                                 Button {
-                                    medicine.takeDose()
-                                } label: {
-                                    Label("Tomar medicamento",systemImage: "checkmark.arrow.trianglehead.counterclockwise")
-                                }
-                                Button {
-                                    medicine.takeDose()
+//                                    medicine.takeDose()
                                 } label: {
                                     Label("Editar",systemImage: "pencil.and.scribble")
                                 }
                                 Button(role: .destructive) {
-                                    medicine.takeDose()
+//                                    medicine.takeDose()
                                 } label: {
                                     Label("Apagar",systemImage: "trash")
                                 }
@@ -95,21 +80,22 @@ struct ListMedicinesView: View {
                     .listStyle(.plain)
                 }
                 .listStyle(.plain)
+
             }
             VStack {
                 Text("")
             }
-            .sheet(isPresented: $addMedicine) {
-                AddMedicineView()
+            .sheet(isPresented: $addTask) {
+                AddTaskView()
             }
-            .navigationTitle("Medicamentos")
+            .navigationTitle("Tarefas")
             .searchable(text: $search)
             .toolbar {
                 ToolbarItem(
                     placement: .topBarTrailing
                 ) {
                     Button {
-                        addMedicine.toggle()
+                        addTask.toggle()
                     } label: {
                         Image(systemName:"plus.circle.fill")
                             .tint(.black.opacity(0.7))
@@ -121,6 +107,16 @@ struct ListMedicinesView: View {
 }
 
 #Preview {
-    ListMedicinesView()
-        .modelContainer(for: [MedicineModel.self])
+    ListTasksView()
+        .modelContainer(for: [TaskModel.self], inMemory: true) { result in
+            do {
+                let container = try result.get()
+                for i in 1...9 {
+                    let task = TaskModel(name: "Task \(i)", priority: Priority.important, hasAlarm: false, days: Days.tomorow, activity: Activity.cleaning, hour: Date(), isDone: false)
+                    container.mainContext.insert(task)
+                }
+            } catch {
+                print(error)
+            }
+        }
 }
