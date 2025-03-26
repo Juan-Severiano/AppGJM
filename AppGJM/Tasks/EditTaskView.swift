@@ -1,18 +1,19 @@
 //
-//  AddTaskView.swift
+//  EditTaskView.swift
 //  AppGJM
 //
-//  Created by Geovana on 20/03/25.
+//  Created by user on 26/03/25.
 //
 
 import SwiftUI
 
-struct AddTaskView: View {
+struct EditTaskView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @State var hasNoName: Bool = false
     
     @State var task: TaskModel = TaskModel(name: "", priority: .routine, hasAlarm: false, days: .everyDay, activity: .cleaning, hour: Date(), isDone: false)
+    
     
     func isSpecificDays() -> Bool {
         return task.days == .specificDays
@@ -60,7 +61,7 @@ struct AddTaskView: View {
                                     .background {
                                         if task.specificDays.contains(value.rawValue) {
                                             Circle()
-                                                .fill(.button)
+                                                .fill(.black.opacity(0.8))
                                         }
                                     }
                                     .onTapGesture {
@@ -73,15 +74,14 @@ struct AddTaskView: View {
                             }
                         }
                     }
-                    DatePicker("Hora", selection: $task.hour, displayedComponents: .hourAndMinute)
                     Toggle(isOn: $task.hasAlarm) {
                         Text("Alarme")
                     }
-                    .tint(.button)
+                    DatePicker("Hora", selection: $task.hour, displayedComponents: .hourAndMinute)
                 }
             }
             .background(Color.white)
-            .navigationTitle("Adicionar Tarefa")
+            .navigationTitle("Editar Tarefa")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -95,7 +95,7 @@ struct AddTaskView: View {
                     Button {
                         self.addTask(task)
                     } label: {
-                        Text("Adicionar")
+                        Text("Seguinte")
                     }
                 }
             }
@@ -108,5 +108,5 @@ struct AddTaskView: View {
 }
 
 #Preview {
-    AddTaskView()
+    EditTaskView()
 }
