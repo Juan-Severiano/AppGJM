@@ -19,27 +19,25 @@ struct MedicineView: View {
             VStack(alignment: .leading) {
                     Text(medicine.name)
                         .font(.title3.bold())
-                        .foregroundColor(.black)
+                        .foregroundColor(.button)
                         .padding(.vertical, 2)
                 
                 HStack(alignment: .bottom, spacing: 1) {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 8) {
                             Image(systemName: "calendar")
-                                .foregroundColor(.primary)
                             Text(medicine.days.rawValue)
                         }
                         HStack(spacing: 8) {
                             Image(systemName: "pills")
-                                .foregroundColor(.primary)
                             Text("\(medicine.format.rawValue) - \(medicine.quantity)\(medicine.typeOfMedicine.rawValue)")
                         }
                         HStack(spacing: 8) {
                             Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                                .foregroundColor(.primary)
                             Text(medicine.repetition.rawValue)
                         }
                     }
+                    .foregroundColor(.button)
                     .font(.caption)
                     Spacer()
                     CustomProgressView(progress: CGFloat(medicine.dosesTaken) / CGFloat(medicine.totalDosesPerDay), label: medicine.getSteps())
@@ -54,7 +52,7 @@ struct MedicineView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .background {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.gray.opacity(0.5))
+                .fill(.accent)
                 .shadow(radius: 4.0, x: 1.0, y: 1.0)
         }
         

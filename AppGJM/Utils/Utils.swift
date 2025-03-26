@@ -19,16 +19,3 @@ func getRepetitionNumber(repetition: Repetition) -> Int {
         return 8
     }
 }
-//
-//func sendAlarm() {
-//    var dateComponents = DateComponents()
-//    dateComponents.calendar = Calendar.current
-//
-//
-//    dateComponents.weekday = 4  // Tuesday
-//    dateComponents.hour = 15    // 14:00 hours
-//    dateComponents.minute = 28
-//       
-//    let trigger = UNCalendarNotificationTrigger(
-//             dateMatching: dateComponents, repeats: true)
-//}

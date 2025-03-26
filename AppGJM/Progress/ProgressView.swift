@@ -17,12 +17,12 @@ struct CustomProgressView: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: 5)
-                .foregroundColor(.black.opacity(0.9))
+                .foregroundColor(.button)
                 .opacity(0.2)
             
             Circle()
                 .trim(from: 0.0, to: min(progress, 1.0))
-                .stroke(AngularGradient(colors: [.black.opacity(0.9)], center: .center), style: StrokeStyle(lineWidth: 6, lineCap: .butt, lineJoin: .miter))
+                .stroke(AngularGradient(colors: [.button.opacity(0.9)], center: .center), style: StrokeStyle(lineWidth: 6, lineCap: .butt, lineJoin: .miter))
                 .rotationEffect(.degrees(-90))
             
             Text(label)

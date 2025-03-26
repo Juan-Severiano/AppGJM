@@ -14,6 +14,7 @@ struct ListMedicinesView: View {
     @State var search: String = ""
     
     @State var addMedicine: Bool = false
+    @State var editMedicine: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -58,8 +59,7 @@ struct ListMedicinesView: View {
                                 } label: {
                                     Image(systemName: "checkmark.arrow.trianglehead.counterclockwise")
                                 }
-                                .tint(.blue)
-
+                                .tint(.button)
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
@@ -67,12 +67,13 @@ struct ListMedicinesView: View {
                                 } label: {
                                     Image(systemName: "trash")
                                 }
+                                .tint(.red)
                                 Button {
-                                    medicine.takeDose()
+                                    editMedicine.toggle()
                                 } label: {
                                     Image(systemName: "pencil.and.scribble")
                                 }
-                                .background(Color.blue)
+                                .tint(.blue)
                             }
                             .listRowSeparator(.hidden)
                             .listRowInsets(.init(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -83,7 +84,7 @@ struct ListMedicinesView: View {
                                     Label("Tomar medicamento",systemImage: "checkmark.arrow.trianglehead.counterclockwise")
                                 }
                                 Button {
-                                    medicine.takeDose()
+                                    editMedicine.toggle()
                                 } label: {
                                     Label("Editar",systemImage: "pencil.and.scribble")
                                 }
@@ -92,6 +93,9 @@ struct ListMedicinesView: View {
                                 } label: {
                                     Label("Apagar",systemImage: "trash")
                                 }
+                            }
+                            .sheet(isPresented: $editMedicine) {
+                                EditMedicineView(medicine: medicine)
                             }
                     }
                     .listStyle(.plain)
@@ -104,7 +108,7 @@ struct ListMedicinesView: View {
             .sheet(isPresented: $addMedicine) {
                 AddMedicineView()
             }
-            .navigationTitle(Text("Medicamentos").foregroundColor(Color("Title")))
+            .navigationTitle("Medicamentos")
             .searchable(text: $search)
             .toolbar {
                 ToolbarItem(
@@ -118,6 +122,18 @@ struct ListMedicinesView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithDefaultBackground()
+            appearance.backgroundColor = .background
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.title]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.title]
+            
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            UINavigationBar.appearance().compactAppearance = appearance
+            
         }
     }
 }

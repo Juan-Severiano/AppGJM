@@ -20,6 +20,7 @@ struct NavigationView: View {
                 ListMedicinesView()
             }
         }
+        .tint(Color.button)
     }
 }
 
