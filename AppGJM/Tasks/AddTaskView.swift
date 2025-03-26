@@ -14,10 +14,9 @@ struct AddTaskView: View {
     
     @State var task: TaskModel = TaskModel(name: "", priority: .routine, hasAlarm: false, days: .everyDay, activity: .cleaning, hour: Date(), isDone: false)
     
-    @State private var selectedDay = "D"
-    
-    // Dias no formato personalizado
-    let days = ["D", "S", "T", "Q", "Q", "S", "S"]
+    func isSpecificDays() -> Bool {
+        return task.days == .specificDays
+    }
     
     var body: some View {
         NavigationStack {
@@ -51,20 +50,28 @@ struct AddTaskView: View {
                             Text(format.rawValue)
                         }
                     }
-                    if task.days == .specificDays {
-                        Picker("Selecione o Dia", selection: $selectedDay) {
-                            ForEach(days, id: \.self) { day in
-                                Text(day)
-                                    .font(.title2)
-                                    .padding()
-                                    .frame(width: 50, height: 50)
-                                    .background(Circle().fill(Color.blue.opacity(0.2)))
-                                    .cornerRadius(25)
-                                    .foregroundColor(.blue)
+                    if isSpecificDays() {
+                        Filter(selection: $task.specificDays) {
+                            ForEach(SpecificDays.allCases, id: \.self) { value in
+                                Text(String(value.rawValue.first!))
+                                    .padding(6)
+                                    .foregroundStyle(task.specificDays.contains(value.rawValue) ? Color.white : Color.primary)
+                                    .frame(width: 40)
+                                    .background {
+                                        if task.specificDays.contains(value.rawValue) {
+                                            Circle()
+                                                .fill(.black.opacity(0.8))
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        if task.specificDays.contains(value.rawValue) {
+                                            task.specificDays.remove(value.rawValue)
+                                        } else {
+                                            task.specificDays.insert(value.rawValue)
+                                        }
+                                    }
                             }
                         }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding(.horizontal, 20)
                     }
                     Toggle(isOn: $task.hasAlarm) {
                         Text("Alarme")
