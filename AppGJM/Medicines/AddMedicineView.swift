@@ -12,7 +12,11 @@ struct AddMedicineView: View {
     @Environment(\.dismiss) var dismiss
     @State var hasNoName: Bool = false
     
-    @State var medicine: MedicineModel = MedicineModel(name: "", quantity: 1, typeOfMedicine: .mg, format: .comprimido, alarm: false, firstTime: Date(), repetition: .every4Hours, firstMedicineHour: Date(), purpose: "", days: .everyDay)
+    @State var medicine: MedicineModel = MedicineModel(name: "", quantity: 1, typeOfMedicine: .mg, format: .comprimido, alarm: false, firstTime: Date(), repetition: .every4Hours, firstMedicineHour: Date(), purpose: "", days: .specificDays)
+    
+    func isSpecificDays() -> Bool {
+        return medicine.days == .specificDays
+    }
     
     var body: some View {
         NavigationStack {
@@ -49,8 +53,28 @@ struct AddMedicineView: View {
                             Text(format.rawValue)
                         }
                     }
-                    if medicine.days == .specificDays {
-                        Text("dsfsdf")
+                    if isSpecificDays() {
+                        Filter(selection: $medicine.specificDays) {
+                            ForEach(SpecificDays.allCases, id: \.self) { value in
+                                Text(String(value.rawValue.first!))
+                                    .padding(6)
+                                    .foregroundStyle(medicine.specificDays.contains(value.rawValue) ? Color.white : Color.primary)
+                                    .frame(width: 40)
+                                    .background {
+                                        if medicine.specificDays.contains(value.rawValue) {
+                                            Circle()
+                                                .fill(.black.opacity(0.8))
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        if medicine.specificDays.contains(value.rawValue) {
+                                            medicine.specificDays.remove(value.rawValue)
+                                        } else {
+                                            medicine.specificDays.insert(value.rawValue)
+                                        }
+                                    }
+                            }
+                        }
                     }
                     Picker("Repetição", selection: $medicine.repetition) {
                         ForEach(Repetition.allCases, id: \.self) { format in

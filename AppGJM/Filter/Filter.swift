@@ -31,16 +31,18 @@ struct Filter<Content: View, SelectionValue: Hashable>: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                _VariadicView.Tree(_FilterLayout(selection: selection)) {
-                    content
+        VStack {
+            ScrollView(.horizontal) {
+                HStack {
+                    _VariadicView.Tree(_FilterLayout(selection: selection)) {
+                        content
+                    }
                 }
+                .toggleStyle(.button)
             }
-            .toggleStyle(.button)
+            .scrollIndicators(.hidden)
+            .scrollClipDisabled()
         }
-        .scrollIndicators(.hidden)
-        .scrollClipDisabled()
     }
 }
 
@@ -129,7 +131,7 @@ fileprivate struct _FilterLayout<SelectionValue: Hashable>: _VariadicView_MultiV
         ForEach(["segunda-feira"], id: \.self) { value in
             let first = value.first!
             Text(String(first))
-                .padding()
+                .padding(4)
                 .background {
                     if selection.contains(value) {
                         Circle()

@@ -37,6 +37,16 @@ enum Days: String, CaseIterable, Codable {
     case specificDays = "Dias específicos"
 }
 
+enum SpecificDays: String, CaseIterable, Codable {
+    case sunday = "Dom"
+    case monday = "Seg"
+    case tuesday = "Ter"
+    case wednesday = "Qua"
+    case thursday = "Qui"
+    case friday = "Sext"
+    case sathurday = "Sáb"
+}
+
 @Model
 class MedicineModel {
     var id: UUID
@@ -50,7 +60,7 @@ class MedicineModel {
     var firstMedicineHour: Date
     var purpose: String
     var days: Days
-    var specificDays: [Days]?
+    var specificDays: Set<String> = []
     
     var dosesTaken: Int
     var totalDosesPerDay: Int
@@ -72,7 +82,7 @@ class MedicineModel {
         let rangeOfRepetition = getRepetitionNumber(repetition: repetition)
         self.totalDosesPerDay = dayTotalHours / Int(rangeOfRepetition)
         self.days = days
-        self.specificDays = nil
+        self.specificDays = []
     }
     
     func getSteps() -> String {
